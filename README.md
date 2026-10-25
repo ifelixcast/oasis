@@ -1,33 +1,13 @@
 # Oasis starter
 
-Starter skeleton for Oasis: post a spontaneous activity, and people nearby can join.
+Whim! : Spontaneous activities others can join at the moment
 Stack: Expo (React Native) + TypeScript + Expo Router, with Supabase for auth and the database.
 
 The skeleton covers the core loop: **sign up / sign in → post an event → see open events → join one → see your profile and counts.**
-Everything else (map, radius, places, reviews, notifications, badges, verification) is left for the team to build on top.
+Everything else (map, radius, places, reviews, notifications, badges, verification) is left to build on top.
 
 ---
 
-## 1. One-time setup (one person does this, then pushes to GitHub)
-
-You need Node.js installed and the **Expo Go** app on your phone (or an iOS/Android simulator).
-
-```bash
-# Create the project with the default template (includes Expo Router + TypeScript)
-npx create-expo-app@latest oasis
-cd oasis
-
-# Remove the template's example screens
-npm run reset-project
-
-# Supabase client + session storage
-npx expo install @supabase/supabase-js @react-native-async-storage/async-storage
-```
-
-Then copy the files from this starter into the project, replacing the `app/` folder that
-`reset-project` created:
-
-```
 oasis/
 ├── app/
 │   ├── _layout.tsx        # root: AuthProvider + logged-in / logged-out routing
@@ -79,24 +59,13 @@ npx expo start
 
 Scan the QR code with Expo Go. Sign up, post an event, and check that it shows up on the Nearby tab.
 
-**Gotcha:** Supabase Auth requires email confirmation by default, so after signing up you'll
+**Note** Supabase Auth requires email confirmation by default, so after signing up you'll
 get an email before you can sign in. For development you can turn this off under
 Authentication → Providers → Email.
 
 ---
 
-## 2. What to build next
 
-These are suggestions. Adjust to your group's milestones and what your mentor wants to see.
-
-| Weeks | Focus | Notes |
-|---|---|---|
-| 1–2 | Setup, auth, profiles | Everyone gets the app running. Profile fields (birthday, university). Decide on the private-data split (mobile, birthday). |
-| 3–4 | Events core loop | Event detail screen with the list of buddies. Leave an event. Host can cancel. Enforce `max_participants`. Pick a start time. |
-| 5–6 | Location | `expo-location` for the user's position. Attach lat/lng to events. Radius filter on the feed. Map view with pins. Places table hooked up. |
-| 7 | Reviews and notifications | Rate a place after an event. Push notifications for new events within your radius. |
-| 8 | Safety and polish | Student verification (whatever your mentor decides), location sharing levels, UI pass. |
-| 9–10 | Testing and buffer | Fix bugs, test with real students, prepare the demo. |
 
 ### Splitting the work
 

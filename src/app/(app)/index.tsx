@@ -92,7 +92,7 @@ export default function Feed() {
       renderItem={renderItem}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={load} />}
       ListEmptyComponent={
-        refreshing ? null : <Text style={styles.empty}>Nothing happening nearby yet. Post an event from the Post tab.</Text>
+        refreshing ? undefined : <Text style={styles.empty}>Nothing happening nearby yet. Post an event from the Post tab.</Text>
       }
     />
   )

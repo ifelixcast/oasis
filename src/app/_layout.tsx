@@ -1,12 +1,23 @@
 import { Stack } from 'expo-router'
+import {
+  BricolageGrotesque_400Regular,
+  BricolageGrotesque_600SemiBold,
+  BricolageGrotesque_700Bold,
+  useFonts,
+} from '@expo-google-fonts/bricolage-grotesque'
 import { ActivityIndicator, View } from 'react-native'
 import { AuthProvider, useAuth } from '../context/AuthContext'
 import { colors } from '../lib/theme'
 
 function RootNavigator() {
   const { session, loading } = useAuth()
+  const [fontsLoaded] = useFonts({
+    BricolageGrotesque_400Regular,
+    BricolageGrotesque_600SemiBold,
+    BricolageGrotesque_700Bold,
+  })
 
-  if (loading) {
+  if (loading || !fontsLoaded) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.background }}>
         <ActivityIndicator color={colors.primary} />

@@ -11,3 +11,19 @@ export const colors = {
 }
 
 export const space = { xs: 4, sm: 8, md: 16, lg: 24 }
+
+// Whim brand tokens (from the Figma sign-in screen).
+export const brand = {
+  green: '#008570',
+  butter: '#FFEFAA', // logo
+  deepTeal: '#0B5F5C',
+  cream: '#F7F0E6', // input fields, links
+  creamButton: '#F7EFE5',
+}
+
+// Loaded in app/_layout.tsx via @expo-google-fonts/bricolage-grotesque.
+export const fonts = {
+  regular: 'BricolageGrotesque_400Regular',
+  semiBold: 'BricolageGrotesque_600SemiBold',
+  bold: 'BricolageGrotesque_700Bold',
+}
