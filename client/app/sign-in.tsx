@@ -1,3 +1,5 @@
+// Sign-in screen: the only screen you see when logged out (from the Figma login design).
+// Same form for both actions: "Sign In" logs in, "Create account" signs up.
 import { useState } from 'react'
 import {
   Alert,
@@ -32,9 +34,10 @@ export default function SignIn() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     setBusy(false)
     if (error) Alert.alert('Sign in failed', error.message)
-    // On success, AuthContext gets the new session and the router switches to (app).
+    // On success, AuthContext gets the new session and the router switches to (tabs).
   }
 
+  // If email confirmation is on in Supabase, there's no session until the user confirms.
   async function signUp() {
     setBusy(true)
     const { data, error } = await supabase.auth.signUp({ email, password })
@@ -54,8 +57,8 @@ export default function SignIn() {
       {/* The logo PNG is an alpha mask in Figma; tinting it reproduces the masked butter fill. */}
       <View style={{ height: LOGO_VISIBLE_HEIGHT * scale, overflow: 'hidden' }}>
         <Image
-          source={require('../../assets/images/brand/whim-logo.png')}
-          tintColor={brand.butter}
+          source={require('../assets/images/brand/whim-logo.png')}
+          tintColor={brand.cream}
           contentFit="contain"
           accessibilityLabel="Whim!"
           style={{ width: LOGO.width * scale, height: LOGO.height * scale, marginLeft: LOGO.left * scale }}

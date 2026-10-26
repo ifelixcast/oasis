@@ -1,3 +1,4 @@
+// "+" tab: form to post a new event that stays open for a set number of minutes.
 import { useState } from 'react'
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
 import { router } from 'expo-router'
@@ -12,6 +13,7 @@ export default function CreateEvent() {
   const [minutes, setMinutes] = useState('60')
   const [busy, setBusy] = useState(false)
 
+  // Checks the form, saves the event, then clears the form and goes back to Home.
   async function post() {
     const expiresIn = parseInt(minutes, 10)
     if (!title.trim()) return Alert.alert('Add a title', 'Say what you want to do, like "Dumplings in Chinatown".')

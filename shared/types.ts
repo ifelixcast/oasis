@@ -1,5 +1,6 @@
-// Row types matching the Supabase schema.
+// Row types matching the Supabase schema, shared by the app (client/) and any server code.
 // If you rename a column in Supabase, update it here too.
+// Keep this file free of React Native imports so server code can use it.
 
 export type EventStatus = 'open' | 'full' | 'cancelled' | 'completed'
 
@@ -10,6 +11,7 @@ export type Profile = {
   birthday: string | null // 'YYYY-MM-DD'
   bio: string | null
   university_id: number | null
+  interests: string[] | null // shown as the "Into" chips; see server/supabase/setup.sql section 4
   created_at: string
 }
 

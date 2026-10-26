@@ -91,3 +91,8 @@ create policy "users delete own reviews" on public.reviews
 
 -- TODO: once mobile/birthday move to a private table, give it
 -- owner-only select/update policies.
+
+------------------------------------------------------------
+-- 4. Interests shown as the "Into" chips on the profile page
+------------------------------------------------------------
+alter table public.profiles add column if not exists interests text[] not null default '{}';

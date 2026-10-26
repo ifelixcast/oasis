@@ -1,11 +1,13 @@
+// Home tab: lists open events that haven't expired yet, and lets you join them.
 import { useCallback, useState } from 'react'
 import { Alert, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import { useFocusEffect } from 'expo-router'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
-import { Event } from '../../lib/types'
+import { Event } from '../../../shared/types'
 import { colors, space } from '../../lib/theme'
 
+// How many whole minutes until an event expires (never negative).
 function minutesLeft(expiresAt: string) {
   return Math.max(0, Math.round((new Date(expiresAt).getTime() - Date.now()) / 60000))
 }
@@ -14,6 +16,7 @@ export default function Feed() {
   const { session } = useAuth()
   const userId = session?.user.id
   const [events, setEvents] = useState<Event[]>([])
+  // IDs of events the current user has already joined, so we can show "You're in".
   const [joinedIds, setJoinedIds] = useState<Set<number>>(new Set())
   const [refreshing, setRefreshing] = useState(false)
 
@@ -48,6 +51,7 @@ export default function Feed() {
     }, [load])
   )
 
+  // Adds the user to the event's buddy list.
   async function join(eventId: number) {
     if (!userId) return
     const { error } = await supabase.from('event_buddies').insert({ event_id: eventId, profile_id: userId })
@@ -60,6 +64,7 @@ export default function Feed() {
     setJoinedIds((prev) => new Set(prev).add(eventId))
   }
 
+  // One event card. The button depends on whether you host it, already joined, or can join.
   function renderItem({ item }: { item: Event }) {
     const isHost = item.profile_id === userId
     const joined = joinedIds.has(item.id)
@@ -92,7 +97,7 @@ export default function Feed() {
       renderItem={renderItem}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={load} />}
       ListEmptyComponent={
-        refreshing ? undefined : <Text style={styles.empty}>Nothing happening nearby yet. Post an event from the Post tab.</Text>
+        refreshing ? undefined : <Text style={styles.empty}>Nothing happening nearby yet. Start one with the + button.</Text>
       }
     />
   )

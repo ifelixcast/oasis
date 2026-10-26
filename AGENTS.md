@@ -25,7 +25,13 @@ Run lint and typecheck before declaring any task done.
 
 ## Navigation & Routing
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
+- Use **Expo Router** for all navigation. Routes live in `client/app/` (set via the `expo-router` plugin's `root` option in `app.json`) — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `client/app/`.
+
+## Folder layout
+
+- `client/` — the Expo app: routes, components, context, lib (Supabase client, theme), assets.
+- `shared/` — code used by both the app and server code, such as database row types. No React Native imports here.
+- `server/` — Supabase SQL (and Edge Functions, when added).
 - Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
 - Docs: https://docs.expo.dev/router/introduction.md
 

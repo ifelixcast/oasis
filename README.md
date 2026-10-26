@@ -1,4 +1,4 @@
-# Oasis starter
+# Whim!
 
 Whim! : Spontaneous activities others can join at the moment
 Stack: Expo (React Native) + TypeScript + Expo Router, with Supabase for auth and the database.
@@ -8,23 +8,31 @@ Everything else (map, radius, places, reviews, notifications, badges, verificati
 
 ---
 
-oasis/
-├── app/
-│   ├── _layout.tsx        # root: AuthProvider + logged-in / logged-out routing
-│   ├── sign-in.tsx        # email + password sign in and sign up
-│   └── (app)/             # only reachable when logged in
-│       ├── _layout.tsx    # bottom tabs
-│       ├── index.tsx      # "Nearby" feed: open, unexpired events + Join
-│       ├── create.tsx     # "Post": create an event with an expiry timer
-│       └── profile.tsx    # profile edit, hosted/attended counts, sign out
-├── context/
-│   └── AuthContext.tsx    # holds the Supabase session for the whole app
-├── lib/
-│   ├── supabase.ts        # Supabase client
-│   ├── types.ts           # TypeScript types for each table
-│   └── theme.ts           # shared colors and spacing (placeholder)
-├── supabase/
-│   └── setup.sql          # profile trigger, profile_stats view, RLS policies
+whim/
+├── client/                    # the Expo app (runs on the phone)
+│   ├── app/                   # Expo Router screens (set as the router root in app.json)
+│   │   ├── _layout.tsx        # root: fonts, splash, logged-in / logged-out routing
+│   │   ├── sign-in.tsx        # email + password sign in and sign up
+│   │   ├── edit-profile.tsx   # edit username, name, interests, bio
+│   │   └── (tabs)/            # only reachable when logged in; shows the tab bar
+│   │       ├── _layout.tsx    # bottom tabs (custom NavBar)
+│   │       ├── index.tsx      # Home: open, unexpired events + Join
+│   │       ├── map.tsx        # Map (placeholder)
+│   │       ├── create.tsx     # the orange +: create an event with an expiry timer
+│   │       ├── inbox.tsx      # Inbox (placeholder)
+│   │       └── profile.tsx    # You: profile card, hosted/attended counts
+│   ├── components/            # NavBar (tab bar), Splash
+│   ├── context/
+│   │   └── AuthContext.tsx    # holds the Supabase session for the whole app
+│   ├── lib/
+│   │   ├── supabase.ts        # Supabase client
+│   │   └── theme.ts           # colors, fonts, spacing
+│   └── assets/                # icons, logo, splash and design images
+├── shared/
+│   └── types.ts               # TypeScript types for each table (app + future server code)
+├── server/
+│   └── supabase/
+│       └── setup.sql          # profile trigger, profile_stats view, RLS policies, interests column
 └── .env.example
 ```
 
@@ -38,7 +46,7 @@ The key is designed to be used in the app; what protects your data is Row Level 
 
 ### Database
 
-Run `supabase/setup.sql` in the Supabase SQL editor. It does three things:
+Run `server/supabase/setup.sql` in the Supabase SQL editor. It does four things:
 
 1. **Auto-creates a `profiles` row** whenever someone signs up. Without this, inserts into
    `events` fail, because `events.profile_id` points at a profile that doesn't exist yet.
@@ -46,6 +54,7 @@ Run `supabase/setup.sql` in the Supabase SQL editor. It does three things:
    `profiles` (username, name, etc.) must be nullable or have a default.
 2. **Creates the `profile_stats` view** for hosted/attended counts.
 3. **Turns on RLS and adds policies.** Without policies, the app can't read any data.
+4. **Adds the `interests` column** to `profiles`, shown as the "Into" chips on the profile page.
 
 Before running it, check that the names in the SQL match your tables. It assumes
 `profiles`, `places`, `events`, `event_buddies`, `reviews`, with every person column named
