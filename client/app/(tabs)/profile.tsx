@@ -20,6 +20,7 @@ const AVATAR_IMAGE = { left: -15.02, width: 163.79 }
 const TEXT_COLUMN = { left: 175, width: 144 }
 
 export default function ProfileScreen() {
+  // Logged-in user, safe-area sizes (notch / status bar), and the data shown on the page.
   const { session } = useAuth()
   const userId = session?.user.id
   const insets = useSafeAreaInsets()
@@ -49,6 +50,7 @@ export default function ProfileScreen() {
     }, [load])
   )
 
+  // "@name" for display, with a placeholder until a username is set.
   const username = profile?.username ? `@${profile.username}` : '@username'
 
   // Opens the phone's share sheet.
@@ -69,6 +71,8 @@ export default function ProfileScreen() {
           <View style={styles.card}>
             <Image source={require('../../assets/images/profile/star-card.png')} style={StyleSheet.absoluteFill} />
 
+            {/* Photo, cropped to its box, with a thin black frame drawn over it. */}
+
             <View style={styles.avatar}>
               {/* TODO: replace with the user's photo once profiles have an avatar column. */}
               <Image
@@ -78,6 +82,7 @@ export default function ProfileScreen() {
             </View>
             <Image source={require('../../assets/images/profile/avatar-frame.svg')} style={styles.avatarFrame} />
 
+            {/* Right side of the card: name, @username, and "Into" interest chips. */}
             <View style={styles.textColumn}>
               <Text style={styles.name} numberOfLines={1} adjustsFontSizeToFit>
                 {profile?.name || 'Your name'}
@@ -120,6 +125,7 @@ export default function ProfileScreen() {
             </Pressable>
           </View>
 
+          {/* Small pop-up under "..." with Sign out. */}
           {menuOpen ? (
             <View style={styles.menu}>
               <Pressable onPress={() => supabase.auth.signOut()} accessibilityRole="button">
@@ -152,9 +158,11 @@ function Stat({ value, label }: { value: number | string; label: string }) {
 }
 
 const styles = StyleSheet.create({
+  // Page background, green header, and the 376pt centered column everything sits in.
   screen: { flex: 1, backgroundColor: profileColors.surface },
   header: { backgroundColor: profileColors.header, alignItems: 'center' },
   column: { width: '100%', maxWidth: COLUMN_WIDTH, alignSelf: 'center' },
+  // Profile card and the photo inside it (positions are relative to the card).
   card: { width: CARD.width, height: CARD.height, marginTop: 34, marginLeft: 13 },
   avatar: {
     position: 'absolute',
@@ -165,11 +173,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   avatarFrame: { position: 'absolute', left: 36, top: 41, width: 127, height: 140 },
+  // Name, @username and "Into" text on the right of the card.
   textColumn: { position: 'absolute', left: TEXT_COLUMN.left, top: 50, width: TEXT_COLUMN.width, alignItems: 'center' },
   name: { fontFamily: fonts.monoBold, fontSize: 24, lineHeight: 31, color: profileColors.black, textAlign: 'center' },
   // Figma tops (card-relative): name 50, handle 81, "Into" 118, chips 145.
   handle: { fontFamily: fonts.mono, fontSize: 16, lineHeight: 21, marginBottom: 16, color: profileColors.handle, textAlign: 'center' },
   into: { fontFamily: fonts.monoBold, fontSize: 16, lineHeight: 21, marginBottom: 6, color: profileColors.black, textAlign: 'center' },
+  // White rounded "Into" interest chips.
   chips: { flexDirection: 'row', gap: 10 },
   chip: {
     height: 36,
@@ -184,12 +194,14 @@ const styles = StyleSheet.create({
   chipText: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 20.3, color: profileColors.ink },
   // Card ends at 256; the action row sits at 268 and the header ends at 338.
   actions: { flexDirection: 'row', alignItems: 'center', marginTop: 12, marginLeft: 20, marginBottom: 44 },
+  // Edit profile pill, plus the round Share and "..." buttons.
   editButton: { width: 255, height: 26, alignItems: 'center', justifyContent: 'center' },
   editText: { fontFamily: fonts.monoBold, fontSize: 14, color: profileColors.black },
   roundButton: { width: 28, height: 26, marginLeft: 14, alignItems: 'center', justifyContent: 'center' },
   moreButton: { marginLeft: 11 },
   shareIcon: { width: 19, height: 19 },
   moreText: { fontFamily: fonts.interBold, fontSize: 16, lineHeight: 19, color: profileColors.black, marginTop: -4 },
+  // The "..." pop-up menu, placed just under the action row.
   menu: {
     position: 'absolute',
     right: 20,
@@ -204,6 +216,7 @@ const styles = StyleSheet.create({
   menuItem: { fontFamily: fonts.semiBold, fontSize: 15, color: profileColors.ink },
   // Stats sit 12pt below the header, 20pt side insets, 8pt gaps.
   stats: { flexDirection: 'row', gap: 8, paddingHorizontal: 20, marginTop: 12 },
+  // One white stat card with its number and label.
   stat: {
     flex: 1,
     alignItems: 'center',

@@ -18,9 +18,11 @@ import Splash from '../components/Splash'
 // Keep the native splash up until the JS copy of it has drawn, so the hand-off is seamless.
 SplashScreen.preventAutoHideAsync()
 
+// Decides what to show: the splash while loading, then the right screens for the user.
 function RootNavigator() {
   // session is null when logged out; loading is true until we know either way.
   const { session, loading } = useAuth()
+
   // Every font the app uses must be listed here, or text falls back to the system font.
   const [fontsLoaded] = useFonts({
     BricolageGrotesque_400Regular,
@@ -37,9 +39,10 @@ function RootNavigator() {
     return <Splash onLayout={() => SplashScreen.hide()} />
   }
 
+  // Ready: each Stack.Protected group is only reachable while its `guard` is true.
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      {/* Logged in: the tab screens in app/(tabs), plus screens opened on top of them. */}
+      {/* Logged in: the tab screens in app/(tabs), plus Edit profile opened on top of them. */}
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="edit-profile" options={{ headerShown: true, title: 'Edit profile', headerBackTitle: 'Back' }} />

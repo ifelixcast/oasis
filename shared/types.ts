@@ -2,8 +2,10 @@
 // If you rename a column in Supabase, update it here too.
 // Keep this file free of React Native imports so server code can use it.
 
+// The states an event can be in.
 export type EventStatus = 'open' | 'full' | 'cancelled' | 'completed'
 
+// One user's profile (the "profiles" table).
 export type Profile = {
   id: string // uuid, same as auth.users.id
   username: string | null
@@ -15,12 +17,14 @@ export type Profile = {
   created_at: string
 }
 
+// Counts from the "profile_stats" view (computed by Supabase, not stored).
 export type ProfileStats = {
   id: string
   events_hosted: number
   events_attended: number
 }
 
+// A saved location events can happen at (the "places" table).
 export type Place = {
   id: number
   profile_id: string | null
@@ -31,6 +35,7 @@ export type Place = {
   created_at: string
 }
 
+// An activity someone posted (the "events" table). profile_id is the host.
 export type Event = {
   id: number
   profile_id: string
@@ -46,6 +51,7 @@ export type Event = {
   created_at: string
 }
 
+// Someone who joined an event (the "event_buddies" table).
 export type EventBuddy = {
   id: number
   event_id: number

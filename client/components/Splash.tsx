@@ -10,8 +10,10 @@ import { brand } from '../lib/theme'
 const LOGO = { width: 389, aspectRatio: 778 / 424 }
 
 // Shown while fonts and the auth session load
+// onLayout fires once the splash has been drawn; the root layout uses it to hide the native splash.
 export default function Splash({ onLayout }: Pick<ViewProps, 'onLayout'>) {
   return (
+    // Green screen with the logo centered.
     <View style={styles.container} onLayout={onLayout}>
       <Image
         source={require('../assets/images/brand/splash-logo.png')}
@@ -24,5 +26,6 @@ export default function Splash({ onLayout }: Pick<ViewProps, 'onLayout'>) {
 }
 
 const styles = StyleSheet.create({
+  // Fill the screen and center the logo both ways.
   container: { flex: 1, backgroundColor: brand.green, alignItems: 'center', justifyContent: 'center' },
 })

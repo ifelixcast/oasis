@@ -13,6 +13,7 @@ function minutesLeft(expiresAt: string) {
 }
 
 export default function Feed() {
+  // Who's logged in, the events on screen, and whether the list is reloading.
   const { session } = useAuth()
   const userId = session?.user.id
   const [events, setEvents] = useState<Event[]>([])
@@ -20,6 +21,7 @@ export default function Feed() {
   const [joinedIds, setJoinedIds] = useState<Set<number>>(new Set())
   const [refreshing, setRefreshing] = useState(false)
 
+  // Fetches the open events and which of them you've joined.
   const load = useCallback(async () => {
     setRefreshing(true)
 
@@ -88,6 +90,7 @@ export default function Feed() {
     )
   }
 
+  // Scrollable list of event cards; pull down to refresh, with a message when it's empty.
   return (
     <FlatList
       style={styles.list}
@@ -104,6 +107,7 @@ export default function Feed() {
 }
 
 const styles = StyleSheet.create({
+  // Screen background and the white event cards.
   list: { flex: 1, backgroundColor: colors.background },
   card: {
     backgroundColor: colors.surface,
@@ -113,11 +117,14 @@ const styles = StyleSheet.create({
     padding: space.md,
     marginBottom: space.md,
   },
+  // Text inside a card: title, description, and grey details like the expiry time.
   cardTitle: { fontSize: 18, fontWeight: '600', color: colors.text },
   cardBody: { fontSize: 15, color: colors.text, marginTop: space.xs },
   meta: { fontSize: 14, color: colors.muted, marginTop: space.sm },
+  // "You're in" label and the Join button.
   joined: { fontSize: 15, color: colors.primary, fontWeight: '600', marginTop: space.sm },
   button: { backgroundColor: colors.primary, borderRadius: 8, padding: space.sm, alignItems: 'center', marginTop: space.sm },
   buttonText: { color: '#fff', fontWeight: '600' },
+  // Message shown when there are no events.
   empty: { textAlign: 'center', color: colors.muted, marginTop: space.lg },
 })

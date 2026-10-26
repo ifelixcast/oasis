@@ -8,6 +8,7 @@ import { colors, space } from '../lib/theme'
 // Edit profile screen: opened from "Edit profile" on the You tab.
 // Loads your current profile into the form and saves changes back to Supabase.
 export default function EditProfile() {
+  // One piece of state per form field; interests is the comma-separated text the user types.
   const { session } = useAuth()
   const userId = session?.user.id
   const [username, setUsername] = useState('')
@@ -52,6 +53,7 @@ export default function EditProfile() {
       .eq('id', userId)
     setBusy(false)
 
+    // Show why it failed, or go back to the profile once saved.
     if (error) {
       // 23505 = unique violation on username
       const message = error.code === '23505' ? 'That username is taken. Try another.' : error.message
@@ -61,6 +63,7 @@ export default function EditProfile() {
     }
   }
 
+  // The form: one labelled text box per field, then the Save button.
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ padding: space.lg }}>
       <Text style={styles.label}>Username</Text>
@@ -83,6 +86,7 @@ export default function EditProfile() {
 }
 
 const styles = StyleSheet.create({
+  // Screen background, field labels, and the white text boxes.
   container: { flex: 1, backgroundColor: colors.background },
   label: { fontSize: 15, fontWeight: '600', color: colors.text, marginTop: space.md, marginBottom: space.xs },
   input: {
@@ -94,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
   },
+  // The teal Save button.
   button: { backgroundColor: colors.primary, borderRadius: 8, padding: space.md, alignItems: 'center', marginTop: space.lg },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 })

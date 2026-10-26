@@ -1,6 +1,8 @@
 // Design tokens: colors, spacing and fonts shared across screens.
 // `colors` and `space` are the original placeholders, still used by Home, +, Map, Inbox
 // and Edit profile; the groups below them come from the Figma designs.
+
+// Original placeholder colors (first starter code version).
 export const colors = {
   background: '#FBF7EF', // sand
   surface: '#FFFFFF',
@@ -11,6 +13,7 @@ export const colors = {
   border: '#E3DCCD',
 }
 
+// Spacing sizes (in points) for padding and margins.
 export const space = { xs: 4, sm: 8, md: 16, lg: 24 }
 
 // Whim brand tokens (from the Figma sign-in screen).
@@ -34,14 +37,14 @@ export const profileColors = {
   black: '#000000',
 }
 
-// Bottom tab bar (Figma "Nav - App tabs"); surfaces and border reuse profileColors.
+// Bottom tab bar (Figma "Nav bar tabs"); surfaces and border reuse profileColors.
 export const tabColors = {
   active: '#0B5F5C',
   inactive: '#5B7078',
-  action: '#F04400', // "Start an activity" button
+  createActivity: '#F04400', // the orange + (create activity) button
 }
 
-// Loaded in client/app/_layout.tsx via @expo-google-fonts (bricolage-grotesque, intel-one-mono, inter).
+// FONTS Loaded in client/app/_layout.tsx via @expo-google-fonts (bricolage-grotesque, intel-one-mono, inter).
 export const fonts = {
   regular: 'BricolageGrotesque_400Regular',
   medium: 'BricolageGrotesque_500Medium',

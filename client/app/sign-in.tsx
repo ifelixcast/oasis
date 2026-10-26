@@ -23,12 +23,15 @@ const LOGO = { width: 389, height: 211.561, left: 6 }
 const LOGO_VISIBLE_HEIGHT = 166.52
 
 export default function SignIn() {
+  // Screen width (to scale the logo), the typed email/password, and a flag that
+  // disables the buttons while a request is running.
   const { width } = useWindowDimensions()
   const scale = width / FRAME_WIDTH
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
 
+  // Logs in with the typed email and password.
   async function signIn() {
     setBusy(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
@@ -67,6 +70,7 @@ export default function SignIn() {
 
       <View style={{ flex: 106.5 }} />
 
+      {/* Email and password fields. */}
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -87,6 +91,7 @@ export default function SignIn() {
         onChangeText={setPassword}
       />
 
+      {/* Main button, then the smaller "Create account" link; both fade slightly while pressed. */}
       <Pressable
         style={({ pressed }) => [styles.button, pressed && styles.pressed]}
         onPress={signIn}
@@ -111,6 +116,7 @@ export default function SignIn() {
 }
 
 const styles = StyleSheet.create({
+  // Green background behind everything.
   container: { flex: 1, backgroundColor: brand.green },
   // Fields and button share the Figma 45pt / 39pt side insets.
   input: {
@@ -125,6 +131,7 @@ const styles = StyleSheet.create({
     color: brand.deepTeal,
   },
   passwordInput: { marginTop: 19 },
+  // Cream Sign In button and the "Create account" link under it.
   button: {
     height: 50,
     marginTop: 51,

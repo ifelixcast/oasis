@@ -18,7 +18,7 @@ whim/
 │   │       ├── _layout.tsx    # bottom tabs (custom NavBar)
 │   │       ├── index.tsx      # Home: open, unexpired events + Join
 │   │       ├── map.tsx        # Map (placeholder)
-│   │       ├── create.tsx     # the orange +: create an event with an expiry timer
+│   │       ├── create-activity.tsx # the orange +: create an activity with an expiry timer
 │   │       ├── inbox.tsx      # Inbox (placeholder)
 │   │       └── profile.tsx    # You: profile card, hosted/attended counts
 │   ├── components/            # NavBar (tab bar), Splash
@@ -36,16 +36,7 @@ whim/
 └── .env.example
 ```
 
-### Environment variables
-
-1. Copy `.env.example` to `.env`.
-2. Fill in the project URL and publishable (anon) key from Supabase → Project Settings → API.
-3. Add `.env` to `.gitignore` and share the values with teammates privately.
-
-The key is designed to be used in the app; what protects your data is Row Level Security, not hiding the key.
-
 ### Database
-
 Run `server/supabase/setup.sql` in the Supabase SQL editor. It does four things:
 
 1. **Auto-creates a `profiles` row** whenever someone signs up. Without this, inserts into
@@ -53,10 +44,10 @@ Run `server/supabase/setup.sql` in the Supabase SQL editor. It does four things:
    For it to work, `profiles.id` must reference `auth.users.id`, and every other column on
    `profiles` (username, name, etc.) must be nullable or have a default.
 2. **Creates the `profile_stats` view** for hosted/attended counts.
-3. **Turns on RLS and adds policies.** Without policies, the app can't read any data.
+3. **Turns on RLS and adds policies.**
 4. **Adds the `interests` column** to `profiles`, shown as the "Into" chips on the profile page.
 
-Before running it, check that the names in the SQL match your tables. It assumes
+Before running it, check that the names in the SQL match tables. It assumes
 `profiles`, `places`, `events`, `event_buddies`, `reviews`, with every person column named
 `profile_id`. If your reviews table is still called `review`, rename it or edit the SQL.
 

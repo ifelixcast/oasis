@@ -4,13 +4,16 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase'
 
+// What useAuth() gives you.
 type AuthContextValue = {
   session: Session | null
   loading: boolean
 }
 
+// The shared "box" that holds the value; starts as logged out and still loading.
 const AuthContext = createContext<AuthContextValue>({ session: null, loading: true })
 
+// Wrap the app in this (see client/app/_layout.tsx) so every screen can read the session.
 export function AuthProvider({ children }: PropsWithChildren) {
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
@@ -29,12 +32,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setSession(newSession)
     })
 
+    // Stop listening if the provider is ever removed.
     return () => subscription.unsubscribe()
   }, [])
 
+  // Hand the current session to everything inside.
   return <AuthContext.Provider value={{ session, loading }}>{children}</AuthContext.Provider>
 }
 
+// Call this in any screen: const { session, loading } = useAuth()
 export function useAuth() {
   return useContext(AuthContext)
 }

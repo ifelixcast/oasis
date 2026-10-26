@@ -1,7 +1,9 @@
+// Inbox tab: placeholder so the Inbox tab has somewhere to go.
+// Replace with messages / event updates later.
 import { StyleSheet, Text, View } from 'react-native'
 import { colors, space } from '../../lib/theme'
 
-// Placeholder so the Inbox tab has somewhere to go.
+// A full screen with one centered message.
 export default function InboxScreen() {
   return (
     <View style={styles.container}>
