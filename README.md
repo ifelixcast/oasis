@@ -1,13 +1,28 @@
 # Whim!
 
 Whim! : Spontaneous activities others can join at the moment
-Stack: Expo (React Native) + TypeScript + Expo Router, with Supabase for auth and the database.
+
+### Run it
+
+```bash
+npx expo start
+```
+Scan the QR code with Expo Go. Sign up, post an event, and check that it shows up on the Nearby tab.
+
+**Note** Supabase Auth requires email confirmation by default, so after signing up you'll
+get an email before you can sign in. For development you can turn this off under
+Authentication → Providers → Email.
+
+**Stack:** Expo (React Native) + TypeScript + Expo Router, with Supabase for auth and the database.
 
 The skeleton covers the core loop: **sign up / sign in → post an event → see open events → join one → see your profile and counts.**
 Everything else (map, radius, places, reviews, notifications, badges, verification) is left to build on top.
 
 ---
 
+## Project structure
+
+```text
 whim/
 ├── client/                    # the Expo app (runs on the phone)
 │   ├── app/                   # Expo Router screens (set as the router root in app.json)
@@ -50,18 +65,6 @@ Run `server/supabase/setup.sql` in the Supabase SQL editor. It does four things:
 Before running it, check that the names in the SQL match tables. It assumes
 `profiles`, `places`, `events`, `event_buddies`, `reviews`, with every person column named
 `profile_id`. If your reviews table is still called `review`, rename it or edit the SQL.
-
-### Run it
-
-```bash
-npx expo start
-```
-
-Scan the QR code with Expo Go. Sign up, post an event, and check that it shows up on the Nearby tab.
-
-**Note** Supabase Auth requires email confirmation by default, so after signing up you'll
-get an email before you can sign in. For development you can turn this off under
-Authentication → Providers → Email.
 
 ---
 

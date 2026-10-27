@@ -8,7 +8,7 @@ import { colors, space } from '../lib/theme'
 // Edit profile screen: opened from "Edit profile" on the You tab.
 // Loads your current profile into the form and saves changes back to Supabase.
 export default function EditProfile() {
-  // One piece of state per form field; interests is the comma-separated text the user types.
+  // One piece of state per form field; interests is the comma-separated text the user types (i'll change it later).
   const { session } = useAuth()
   const userId = session?.user.id
   const [username, setUsername] = useState('')
