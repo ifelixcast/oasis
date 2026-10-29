@@ -4,10 +4,31 @@ Whim! : Spontaneous activities others can join at the moment
 
 ### Run it
 
+First time only, after cloning:
+
+1. Install the packages:
+
+   ```bash
+   npm install
+   ```
+
+2. Create your `.env` file from the template:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Open `.env` and fill in `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+   Ask a teammate for the values, or copy them from Supabase → Project Settings → API.
+   `.env` is not in git on purpose, so every teammate needs their own copy.
+
+Then start the app (`-c` clears the cache, which you need after creating or editing `.env`):
+
 ```bash
-npx expo start
+npx expo start -c
 ```
-Scan the QR code with Expo Go. Sign up, post an event, and check that it shows up on the Nearby tab.
+
+Scan the QR code with Expo Go. Sign up, post an activity with the + button, and check that it shows up on the Home tab.
 
 **Note** Supabase Auth requires email confirmation by default, so after signing up you'll
 get an email before you can sign in. For development you can turn this off under

@@ -31,10 +31,21 @@ export default function SignIn() {
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
 
+  // Checks both fields are filled in before calling Supabase. Without this, an empty
+  // sign-up comes back as the confusing "Anonymous sign-ins are disabled".
+  function fieldsFilled(title: string) {
+    if (!email.trim() || !password) {
+      Alert.alert(title, 'Enter your email and password first.')
+      return false
+    }
+    return true
+  }
+
   // Logs in with the typed email and password.
   async function signIn() {
+    if (!fieldsFilled('Sign in failed')) return
     setBusy(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
     setBusy(false)
     if (error) Alert.alert('Sign in failed', error.message)
     // On success, AuthContext gets the new session and the router switches to (tabs).
@@ -42,8 +53,14 @@ export default function SignIn() {
 
   // If email confirmation is on in Supabase, there's no session until the user confirms.
   async function signUp() {
+    if (!fieldsFilled('Sign up failed')) return
+    // Supabase rejects passwords shorter than 6 characters by default.
+    if (password.length < 6) {
+      Alert.alert('Sign up failed', 'Use a password with at least 6 characters.')
+      return
+    }
     setBusy(true)
-    const { data, error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email: email.trim(), password })
     setBusy(false)
     if (error) {
       Alert.alert('Sign up failed', error.message)

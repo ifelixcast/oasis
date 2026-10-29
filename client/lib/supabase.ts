@@ -5,9 +5,16 @@ import { AppState, Platform } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createClient } from '@supabase/supabase-js'
 
-// Read from .env; the ! tells TypeScript these are always set.
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!
-const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
+// Read from .env, which isn't in git. Fail with a clear message if it's missing,
+// instead of Supabase's vague "supabaseUrl is required".
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
+const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+if (!supabaseUrl || !supabasePublishableKey) {
+  throw new Error(
+    'Missing Supabase settings. Copy .env.example to .env in the project folder, fill in the URL and key ' +
+      '(ask a teammate or see Supabase → Project Settings → API), then restart with `npx expo start -c`.'
+  )
+}
 
 // Create the client. The auth options keep users logged in between app launches.
 export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
