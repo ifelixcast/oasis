@@ -12,6 +12,7 @@ import {
 } from '@expo-google-fonts/bricolage-grotesque'
 import { IntelOneMono_400Regular, IntelOneMono_700Bold } from '@expo-google-fonts/intel-one-mono'
 import { Inter_700Bold } from '@expo-google-fonts/inter'
+import { Jost_700Bold } from '@expo-google-fonts/jost'
 import { AuthProvider, useAuth } from '../context/AuthContext'
 import Splash from '../components/Splash'
 
@@ -32,6 +33,7 @@ function RootNavigator() {
     IntelOneMono_400Regular,
     IntelOneMono_700Bold,
     Inter_700Bold,
+    Jost_700Bold,
   })
 
   // Still starting up: show the splash, then hide the native one once ours has drawn.
@@ -45,7 +47,8 @@ function RootNavigator() {
       {/* Logged in: the tab screens in app/(tabs), plus Edit profile opened on top of them. */}
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="edit-profile" options={{ headerShown: true, title: 'Edit profile', headerBackTitle: 'Back' }} />
+        {/* Edit profile draws its own "Edit profile" title, so the default top bar is hidden. */}
+        <Stack.Screen name="edit-profile" />
       </Stack.Protected>
 
       {/* Logged out: only the sign-in screen */}

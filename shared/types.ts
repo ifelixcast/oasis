@@ -14,6 +14,7 @@ export type Profile = {
   bio: string | null
   university_id: number | null
   interests: string[] | null // shown as the "Into" chips; see server/supabase/setup.sql section 4
+  avatar_url: string | null // public URL of the photo in the "avatars" bucket; see setup.sql section 5
   created_at: string
 }
 

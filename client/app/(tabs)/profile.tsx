@@ -74,11 +74,15 @@ export default function ProfileScreen() {
             {/* Photo, cropped to its box, with a thin black frame drawn over it. */}
 
             <View style={styles.avatar}>
-              {/* TODO: replace with the user's photo once profiles have an avatar column. */}
-              <Image
-                source={require('../../assets/images/profile/avatar-placeholder.png')}
-                style={{ position: 'absolute', top: 0, left: AVATAR_IMAGE.left, width: AVATAR_IMAGE.width, height: AVATAR.height }}
-              />
+              {/* Your photo if you've set one (Edit profile), else the placeholder. */}
+              {profile?.avatar_url ? (
+                <Image source={{ uri: profile.avatar_url }} style={StyleSheet.absoluteFill} contentFit="cover" />
+              ) : (
+                <Image
+                  source={require('../../assets/images/profile/avatar-placeholder.png')}
+                  style={{ position: 'absolute', top: 0, left: AVATAR_IMAGE.left, width: AVATAR_IMAGE.width, height: AVATAR.height }}
+                />
+              )}
             </View>
             <Image source={require('../../assets/images/profile/avatar-frame.svg')} style={styles.avatarFrame} />
 

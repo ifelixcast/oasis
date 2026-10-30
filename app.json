@@ -32,6 +32,13 @@
           "image": "./client/assets/images/brand/splash-logo.png",
           "imageWidth": 389
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Whim! uses your photos so you can choose a profile picture.",
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {

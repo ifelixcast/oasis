@@ -37,6 +37,16 @@ export const profileColors = {
   black: '#000000',
 }
 
+// Edit profile screen tokens (from the Figma edit profile design); background reuses profileColors.surface.
+export const editProfileColors = {
+  card: '#442022', // maroon form card, also the title
+  label: 'rgba(255,255,255,0.8)',
+  value: '#FFFFFF',
+  placeholder: 'rgba(255,255,255,0.6)',
+  saveText: '#182A2A',
+  deleteText: '#FFFFFF',
+}
+
 // Bottom tab bar (Figma "Nav bar tabs"); surfaces and border reuse profileColors.
 export const tabColors = {
   active: '#0B5F5C',
@@ -44,7 +54,7 @@ export const tabColors = {
   createActivity: '#F04400', // the orange + (create activity) button
 }
 
-// FONTS Loaded in client/app/_layout.tsx via @expo-google-fonts (bricolage-grotesque, intel-one-mono, inter).
+// FONTS Loaded in client/app/_layout.tsx via @expo-google-fonts (bricolage-grotesque, intel-one-mono, inter, jost).
 export const fonts = {
   regular: 'BricolageGrotesque_400Regular',
   medium: 'BricolageGrotesque_500Medium',
@@ -53,4 +63,5 @@ export const fonts = {
   mono: 'IntelOneMono_400Regular',
   monoBold: 'IntelOneMono_700Bold',
   interBold: 'Inter_700Bold',
+  jostBold: 'Jost_700Bold',
 }
