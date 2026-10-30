@@ -2,7 +2,7 @@
 // Form to post a new activity that stays open for a set number of minutes.
 // Activities are saved in the "events" table.
 import { useState } from 'react'
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { router } from 'expo-router'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
@@ -15,6 +15,8 @@ export default function CreateActivity() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [minutes, setMinutes] = useState('60')
+  // How many people can join, not counting the host.
+  const [spots, setSpots] = useState(3)
   const [busy, setBusy] = useState(false)
 
   // Checks the form, saves the event, then clears the form and goes back to Home.
@@ -34,7 +36,8 @@ export default function CreateActivity() {
       description: description.trim() || null,
       starts_at: now.toISOString(), // TODO: let the host pick a start time
       expires_at: new Date(now.getTime() + expiresIn * 60000).toISOString(),
-      // TODO: place_id, lat/lng, max_participants
+      max_participants: spots,
+      // TODO: place_id, lat/lng
     })
     setBusy(false)
 
@@ -44,6 +47,7 @@ export default function CreateActivity() {
     setTitle('')
     setDescription('')
     setMinutes('60')
+    setSpots(3)
     router.navigate('/')
   }
 
@@ -65,6 +69,27 @@ export default function CreateActivity() {
       <Text style={styles.label}>Open for how many minutes?</Text>
       <TextInput style={styles.input} value={minutes} onChangeText={setMinutes} keyboardType="number-pad" />
 
+      <Text style={styles.label}>How many people can join? (not counting you)</Text>
+      <View style={styles.stepper}>
+        <Pressable
+          style={styles.stepButton}
+          onPress={() => setSpots((n) => Math.max(1, n - 1))}
+          accessibilityRole="button"
+          accessibilityLabel="Fewer spots"
+        >
+          <Text style={styles.stepButtonText}>−</Text>
+        </Pressable>
+        <Text style={styles.stepValue}>{spots}</Text>
+        <Pressable
+          style={styles.stepButton}
+          onPress={() => setSpots((n) => Math.min(20, n + 1))}
+          accessibilityRole="button"
+          accessibilityLabel="More spots"
+        >
+          <Text style={styles.stepButtonText}>+</Text>
+        </Pressable>
+      </View>
+
       <Pressable style={styles.button} onPress={post} disabled={busy}>
         <Text style={styles.buttonText}>Post event</Text>
       </Pressable>
@@ -85,6 +110,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlignVertical: 'top',
   },
+  // The − / + spot picker.
+  stepper: { flexDirection: 'row', alignItems: 'center', gap: space.md },
+  stepButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepButtonText: { fontSize: 22, color: colors.primary, fontWeight: '600' },
+  stepValue: { fontSize: 20, fontWeight: '600', color: colors.text, minWidth: 28, textAlign: 'center' },
   // The teal Post button.
   button: { backgroundColor: colors.primary, borderRadius: 8, padding: space.md, alignItems: 'center', marginTop: space.lg },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },

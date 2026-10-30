@@ -19,6 +19,22 @@ const AVATAR = { left: 35, top: 40, width: 129, height: 142 }
 const AVATAR_IMAGE = { left: -15.02, width: 163.79 }
 const TEXT_COLUMN = { left: 175, width: 144 }
 
+// An event you joined, with its host's name, as loaded for the "Joined" list.
+type JoinedEvent = {
+  event_id: number
+  events: {
+    title: string
+    expires_at: string
+    profiles: { name: string | null; username: string | null } | null
+  } | null
+}
+
+// "Expires in 12 min" while it's open, "Ended" after.
+function timeLabel(expiresAt: string) {
+  const minutes = Math.round((new Date(expiresAt).getTime() - Date.now()) / 60000)
+  return minutes > 0 ? `Expires in ${minutes} min` : 'Ended'
+}
+
 export default function ProfileScreen() {
   // Logged-in user, safe-area sizes (notch / status bar), and the data shown on the page.
   const { session } = useAuth()
@@ -26,6 +42,7 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets()
   const [profile, setProfile] = useState<Profile | null>(null)
   const [stats, setStats] = useState<ProfileStats | null>(null)
+  const [joined, setJoined] = useState<JoinedEvent[]>([])
   // Whether the small "..." menu (Sign out) is showing.
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -41,6 +58,15 @@ export default function ProfileScreen() {
     // Counts come from the profile_stats view (see server/supabase/setup.sql).
     const { data: statsRow } = await supabase.from('profile_stats').select('*').eq('id', userId).single()
     setStats(statsRow)
+
+    // Events you're currently in (not ones you left), most recently joined first.
+    const { data: joinedRows } = await supabase
+      .from('event_buddies')
+      .select('event_id, events(title, expires_at, profiles(name, username))')
+      .eq('profile_id', userId)
+      .eq('status', 'accepted')
+      .order('joined_at', { ascending: false })
+    setJoined((joinedRows ?? []) as unknown as JoinedEvent[])
   }, [userId])
 
   // Reload every time this tab comes into view (e.g. after editing the profile).
@@ -143,6 +169,26 @@ export default function ProfileScreen() {
         {/* TODO: no attendance data yet to compute "Shows up". */}
         <Stat value="—" label="Shows up" />
       </View>
+
+      {/* Events you joined. */}
+      <View style={[styles.column, styles.joinedSection]}>
+        <Text style={styles.sectionTitle}>Joined</Text>
+        {joined.length === 0 ? (
+          <Text style={styles.joinedMeta}>You haven't joined anything yet.</Text>
+        ) : (
+          joined.map((row) => (
+            <View key={row.event_id} style={styles.joinedCard}>
+              <Text style={styles.joinedTitle} numberOfLines={1}>
+                {row.events?.title ?? 'Event'}
+              </Text>
+              <Text style={styles.joinedMeta} numberOfLines={1}>
+                Hosted by {row.events?.profiles?.name || row.events?.profiles?.username || 'Someone'}
+                {row.events ? ` · ${timeLabel(row.events.expires_at)}` : ''}
+              </Text>
+            </View>
+          ))
+        )}
+      </View>
     </ScrollView>
   )
 }
@@ -231,4 +277,16 @@ const styles = StyleSheet.create({
   },
   statValue: { fontFamily: fonts.bold, fontSize: 22, lineHeight: 31.9, color: profileColors.ink, textAlign: 'center' },
   statLabel: { fontFamily: fonts.regular, fontSize: 12, lineHeight: 17.4, color: profileColors.slate, textAlign: 'center' },
+  // "Joined" list under the stats: a heading and one white card per event.
+  joinedSection: { paddingHorizontal: 20, marginTop: 20, gap: 8 },
+  sectionTitle: { fontFamily: fonts.bold, fontSize: 18, color: profileColors.ink },
+  joinedCard: {
+    padding: 14,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: profileColors.border,
+    backgroundColor: profileColors.card,
+  },
+  joinedTitle: { fontFamily: fonts.semiBold, fontSize: 16, color: profileColors.ink },
+  joinedMeta: { fontFamily: fonts.regular, fontSize: 13, color: profileColors.slate, marginTop: 2 },
 })

@@ -5,6 +5,10 @@
 // The states an event can be in.
 export type EventStatus = 'open' | 'full' | 'cancelled' | 'completed'
 
+// Whether someone is in an event or left it (event_buddies.status).
+// Only 'accepted' people count toward spots; see server/supabase/join_events.sql.
+export type BuddyStatus = 'accepted' | 'left'
+
 // One user's profile (the "profiles" table).
 export type Profile = {
   id: string // uuid, same as auth.users.id
@@ -46,7 +50,7 @@ export type Event = {
   expires_at: string
   lat: number | null
   lng: number | null
-  max_participants: number | null
+  max_participants: number | null // guests allowed, not counting the host
   status: EventStatus
   created_at: string
 }
@@ -56,5 +60,6 @@ export type EventBuddy = {
   id: number
   event_id: number
   profile_id: string
+  status: BuddyStatus
   joined_at: string
 }
